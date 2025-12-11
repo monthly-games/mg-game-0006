@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "game_id": "game_0006",
+    "code_name": "MG-0006",
+    "title_kr": "히어로 오토 배틀 아레나",
+    "title_en": "Hero Auto Battle Arena",
+    "version": "0.1.0",
+    "last_updated": "2025-01-01"
+  },
+  "overview": {
+    "genre_tags": ["autobattler", "deckbuilding", "pvp"],
+    "target_audience": {
+      "age": "15-35",
+      "region": ["KR", "SEA"],
+      "play_style": "casual-competitive"
+    },
+    "core_loop": "히어로 덱을 구성하고 자동 전투로 승리하며, PVP 아레나에서 경쟁한다",
+    "unique_selling_point": "자동 전투와 전략적 덱 빌딩의 조화"
+  },
+  "gameplay": {
+    "core_mechanics": [
+      {
+        "name": "덱 빌딩",
+        "description": "히어로 카드를 수집하고 최적의 덱 구성"
+      },
+      {
+        "name": "자동 전투",
+        "description": "배치한 히어로가 자동으로 전투 수행"
+      },
+      {
+        "name": "PVP 아레나",
+        "description": "다른 플레이어와 실시간 또는 비동기 PVP"
+      }
+    ],
+    "progression": {
+      "type": "rank_and_collection",
+      "description": "아레나 랭크 상승과 히어로 수집으로 진행"
+    },
+    "session_length": "5-10분"
+  },
+  "economy": {
+    "currencies": [
+      {
+        "name": "골드",
+        "type": "soft",
+        "sources": ["전투 승리", "퀘스트", "아레나 보상"],
+        "sinks": ["히어로 강화", "카드 업그레이드", "상점 구매"]
+      },
+      {
+        "name": "트로피",
+        "type": "rating",
+        "sources": ["PVP 승리"],
+        "sinks": ["시즌 보상"]
+      },
+      {
+        "name": "보석",
+        "type": "hard",
+        "sources": ["인앱 구매", "업적", "이벤트"],
+        "sinks": ["프리미엄 카드 팩", "에너지 충전", "골드 구매"]
+      }
+    ],
+    "monetization": {
+      "model": "F2P + IAP",
+      "iap_items": ["보석 패키지", "카드 팩", "배틀 패스"],
+      "ad_placements": ["보상형 광고 (보상 2배, 카드 팩)", "인터스티셜 (전투 후)"]
+    }
+  },
+  "technical": {
+    "platform": ["Android", "iOS"],
+    "engine": "Flutter + Flame",
+    "backend": "Firebase",
+    "analytics": "GA4 + BigQuery"
+  }
+}
