@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  google_mobile_ads: ^5.2.0
   flutter:
     sdk: flutter
 
@@ -51,6 +52,7 @@ dependency_overrides:
 
 
 dev_dependencies:
+  google_mobile_ads: ^5.2.0
   flutter_test:
     sdk: flutter
 
