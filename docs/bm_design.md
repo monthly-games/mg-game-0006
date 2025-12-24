@@ -1,7 +1,13 @@
-# 히어로 오토 배틀 아레나 - BM 설계 문서
+﻿# 히어로 오토 배틀 아레나 - BM 설계 문서
 
 > game_id: game_0006
 > repo: mg-game-0006
+> title_kr: 히어로 오토 배틀 아레나
+> title_en: Hero Auto Battle Arena
+> genre_tags: autobattler, deckbuilding, pvp
+> doc_type: bm_design
+> source_of_truth: docs/design/gdd_game_0006.json
+> last_updated: 2025-12-19
 
 ---
 
