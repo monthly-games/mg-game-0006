@@ -1,0 +1,501 @@
+{
+  "skeleton": {
+    "hash": "",
+    "spine": "4.1",
+    "x": 0,
+    "y": 0,
+    "width": 1024,
+    "height": 1024,
+    "images": "./"
+  },
+  "bones": [
+    {
+      "name": "root",
+      "x": 0.0,
+      "y": 0.0,
+      "length": 50.0
+    },
+    {
+      "name": "body",
+      "x": 7.52978515625,
+      "y": 426.76556396484375,
+      "length": 50.0,
+      "parent": "root"
+    },
+    {
+      "name": "head",
+      "x": -21.82891845703125,
+      "y": 286.2001953125,
+      "length": 50.0,
+      "parent": "body"
+    },
+    {
+      "name": "thigh_L",
+      "x": 46.308929443359375,
+      "y": 0.85113525390625,
+      "length": 50.0,
+      "parent": "body"
+    },
+    {
+      "name": "shin_L",
+      "x": 30.44970703125,
+      "y": -195.34954833984375,
+      "length": 50.0,
+      "parent": "thigh_L"
+    },
+    {
+      "name": "foot_L",
+      "x": 35.13055419921875,
+      "y": -230.5555419921875,
+      "length": 50.0,
+      "parent": "shin_L"
+    },
+    {
+      "name": "thigh_R",
+      "x": -46.308929443359375,
+      "y": -0.85113525390625,
+      "length": 50.0,
+      "parent": "body"
+    },
+    {
+      "name": "shin_R",
+      "x": -41.935760498046875,
+      "y": -200.1134033203125,
+      "length": 50.0,
+      "parent": "thigh_R"
+    },
+    {
+      "name": "foot_R",
+      "x": -38.704071044921875,
+      "y": -227.5125732421875,
+      "length": 50.0,
+      "parent": "shin_R"
+    },
+    {
+      "name": "arm_L",
+      "x": 71.40042114257812,
+      "y": 218.35333251953125,
+      "length": 50.0,
+      "parent": "body"
+    },
+    {
+      "name": "forearm_L",
+      "x": 83.88861083984375,
+      "y": -81.89697265625,
+      "length": 50.0,
+      "parent": "arm_L"
+    },
+    {
+      "name": "hand_L",
+      "x": 96.67779541015625,
+      "y": -90.56268310546875,
+      "length": 50.0,
+      "parent": "forearm_L"
+    },
+    {
+      "name": "arm_R",
+      "x": -62.837799072265625,
+      "y": 213.0965576171875,
+      "length": 50.0,
+      "parent": "body"
+    },
+    {
+      "name": "forearm_R",
+      "x": -90.4512939453125,
+      "y": -95.96063232421875,
+      "length": 50.0,
+      "parent": "arm_R"
+    },
+    {
+      "name": "hand_R",
+      "x": -94.11398315429688,
+      "y": -75.34521484375,
+      "length": 50.0,
+      "parent": "forearm_R"
+    }
+  ],
+  "ik": [
+    {
+      "name": "leg_L_ik",
+      "target": "foot_L",
+      "bones": [
+        "thigh_L",
+        "shin_L"
+      ],
+      "mix": 1.0,
+      "bendPositive": true
+    },
+    {
+      "name": "leg_R_ik",
+      "target": "foot_R",
+      "bones": [
+        "thigh_R",
+        "shin_R"
+      ],
+      "mix": 1.0,
+      "bendPositive": true
+    }
+  ],
+  "slots": [
+    {
+      "name": "weapon",
+      "bone": "hand_R",
+      "attachment": "weapon"
+    },
+    {
+      "name": "arm_L",
+      "bone": "arm_L",
+      "attachment": "arm_L"
+    },
+    {
+      "name": "arm_L_lower",
+      "bone": "root",
+      "attachment": "arm_L_lower"
+    },
+    {
+      "name": "arm_L_upper",
+      "bone": "root",
+      "attachment": "arm_L_upper"
+    },
+    {
+      "name": "leg_L",
+      "bone": "thigh_L",
+      "attachment": "leg_L"
+    },
+    {
+      "name": "leg_L_lower",
+      "bone": "root",
+      "attachment": "leg_L_lower"
+    },
+    {
+      "name": "leg_L_upper",
+      "bone": "root",
+      "attachment": "leg_L_upper"
+    },
+    {
+      "name": "leg_R",
+      "bone": "thigh_R",
+      "attachment": "leg_R"
+    },
+    {
+      "name": "leg_R_lower",
+      "bone": "root",
+      "attachment": "leg_R_lower"
+    },
+    {
+      "name": "leg_R_upper",
+      "bone": "root",
+      "attachment": "leg_R_upper"
+    },
+    {
+      "name": "body",
+      "bone": "body",
+      "attachment": "body"
+    }
+  ],
+  "skins": {
+    "default": {
+      "weapon": {
+        "weapon": {
+          "x": 247.69540405273438,
+          "y": -115.1060791015625,
+          "width": 648.0,
+          "height": 945.0,
+          "path": "weapon"
+        }
+      },
+      "arm_L": {
+        "arm_L": {
+          "x": 100.89190673828125,
+          "y": -82.668701171875,
+          "width": 252.0,
+          "height": 247.0,
+          "path": "arm_L"
+        }
+      },
+      "arm_L_lower": {
+        "arm_L_lower": {
+          "x": -495.1778869628906,
+          "y": 870.9501953125,
+          "width": 0.0,
+          "height": 0.0,
+          "path": "arm_L_lower"
+        }
+      },
+      "arm_L_upper": {
+        "arm_L_upper": {
+          "x": -495.1778869628906,
+          "y": 870.9501953125,
+          "width": 0.0,
+          "height": 0.0,
+          "path": "arm_L_upper"
+        }
+      },
+      "leg_L": {
+        "leg_L": {
+          "x": 45.4833984375,
+          "y": -207.66650390625,
+          "width": 141.0,
+          "height": 500.0,
+          "path": "leg_L"
+        }
+      },
+      "leg_L_lower": {
+        "leg_L_lower": {
+          "x": -495.1778869628906,
+          "y": 870.9501953125,
+          "width": 0.0,
+          "height": 0.0,
+          "path": "leg_L_lower"
+        }
+      },
+      "leg_L_upper": {
+        "leg_L_upper": {
+          "x": -495.1778869628906,
+          "y": 870.9501953125,
+          "width": 0.0,
+          "height": 0.0,
+          "path": "leg_L_upper"
+        }
+      },
+      "leg_R": {
+        "leg_R": {
+          "x": 39.10125732421875,
+          "y": -156.9642333984375,
+          "width": 329.0,
+          "height": 726.0,
+          "path": "leg_R"
+        }
+      },
+      "leg_R_lower": {
+        "leg_R_lower": {
+          "x": -495.1778869628906,
+          "y": 870.9501953125,
+          "width": 0.0,
+          "height": 0.0,
+          "path": "leg_R_lower"
+        }
+      },
+      "leg_R_upper": {
+        "leg_R_upper": {
+          "x": -495.1778869628906,
+          "y": 870.9501953125,
+          "width": 0.0,
+          "height": 0.0,
+          "path": "leg_R_upper"
+        }
+      },
+      "body": {
+        "body": {
+          "x": 9.292327880859375,
+          "y": 81.18463134765625,
+          "width": 192.0,
+          "height": 264.0,
+          "path": "body"
+        }
+      }
+    }
+  },
+  "animations": {
+    "idle": {
+      "bones": {
+        "body": {
+          "translate": [
+            {
+              "time": 0,
+              "y": 0,
+              "curve": "bezier",
+              "c1": 0.25,
+              "c2": 0,
+              "c3": 0.75,
+              "c4": 1
+            },
+            {
+              "time": 1.0,
+              "y": 5
+            },
+            {
+              "time": 2.0,
+              "y": 0
+            }
+          ]
+        }
+      }
+    },
+    "run": {
+      "bones": {
+        "body": {
+          "translate": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0
+            },
+            {
+              "time": 0.15,
+              "x": 0,
+              "y": 15
+            },
+            {
+              "time": 0.3,
+              "x": 0,
+              "y": 0
+            },
+            {
+              "time": 0.44999999999999996,
+              "x": 0,
+              "y": 15
+            },
+            {
+              "time": 0.6,
+              "x": 0,
+              "y": 0
+            }
+          ],
+          "rotate": [
+            {
+              "time": 0,
+              "angle": 15
+            }
+          ]
+        },
+        "arm_L": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": 60
+            },
+            {
+              "time": 0.3,
+              "angle": -60
+            },
+            {
+              "time": 0.6,
+              "angle": 60
+            }
+          ]
+        },
+        "arm_R": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": -60
+            },
+            {
+              "time": 0.3,
+              "angle": 60
+            },
+            {
+              "time": 0.6,
+              "angle": -60
+            }
+          ]
+        },
+        "thigh_L": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": -45
+            },
+            {
+              "time": 0.3,
+              "angle": 80
+            },
+            {
+              "time": 0.6,
+              "angle": -45
+            }
+          ]
+        },
+        "thigh_R": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": 80
+            },
+            {
+              "time": 0.3,
+              "angle": -45
+            },
+            {
+              "time": 0.6,
+              "angle": 80
+            }
+          ]
+        }
+      }
+    },
+    "attack1": {
+      "bones": {
+        "body": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": 0
+            },
+            {
+              "time": 0.24,
+              "angle": -20
+            },
+            {
+              "time": 0.32000000000000006,
+              "angle": 30
+            },
+            {
+              "time": 0.8,
+              "angle": 0
+            }
+          ]
+        },
+        "arm_R": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": 0
+            },
+            {
+              "time": 0.24,
+              "angle": -120
+            },
+            {
+              "time": 0.32000000000000006,
+              "angle": 60
+            },
+            {
+              "time": 0.8,
+              "angle": 0
+            }
+          ]
+        }
+      }
+    },
+    "die": {
+      "bones": {
+        "root": {
+          "rotate": [
+            {
+              "time": 0,
+              "angle": 0
+            },
+            {
+              "time": 1.0,
+              "angle": 90
+            }
+          ],
+          "translate": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0
+            },
+            {
+              "time": 1.0,
+              "x": -20,
+              "y": -50
+            }
+          ]
+        }
+      }
+    }
+  }
+}

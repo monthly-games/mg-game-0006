@@ -1,0 +1,28 @@
+{
+  "character_id": "archer_test",
+  "type": "spine",
+  "files": [
+    {
+      "name": "archer_test.atlas",
+      "size": 1785
+    },
+    {
+      "name": "archer_test.png",
+      "size": 774545
+    },
+    {
+      "name": "manifest.json",
+      "size": 363
+    },
+    {
+      "name": "skeleton.json",
+      "size": 11575
+    }
+  ],
+  "animations": [
+    "idle",
+    "run",
+    "attack1",
+    "die"
+  ]
+}

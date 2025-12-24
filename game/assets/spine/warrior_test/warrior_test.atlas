@@ -1,0 +1,83 @@
+
+warrior_test.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+weapon
+  rotate: false
+  xy: 0, 0
+  size: 648, 945
+  orig: 648, 945
+  offset: 0, 0
+  index: -1
+leg_R
+  rotate: false
+  xy: 650, 0
+  size: 329, 726
+  orig: 329, 726
+  offset: 0, 0
+  index: -1
+leg_R_lower
+  rotate: false
+  xy: 981, 0
+  size: 329, 726
+  orig: 329, 726
+  offset: 0, 0
+  index: -1
+leg_R_upper
+  rotate: false
+  xy: 1312, 0
+  size: 329, 726
+  orig: 329, 726
+  offset: 0, 0
+  index: -1
+leg_L
+  rotate: false
+  xy: 1643, 0
+  size: 141, 500
+  orig: 141, 500
+  offset: 0, 0
+  index: -1
+leg_L_lower
+  rotate: false
+  xy: 1786, 0
+  size: 141, 500
+  orig: 141, 500
+  offset: 0, 0
+  index: -1
+leg_L_upper
+  rotate: false
+  xy: 0, 947
+  size: 141, 500
+  orig: 141, 500
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 143, 947
+  size: 192, 264
+  orig: 192, 264
+  offset: 0, 0
+  index: -1
+arm_L
+  rotate: false
+  xy: 337, 947
+  size: 252, 247
+  orig: 252, 247
+  offset: 0, 0
+  index: -1
+arm_L_lower
+  rotate: false
+  xy: 591, 947
+  size: 252, 247
+  orig: 252, 247
+  offset: 0, 0
+  index: -1
+arm_L_upper
+  rotate: false
+  xy: 845, 947
+  size: 252, 247
+  orig: 252, 247
+  offset: 0, 0
+  index: -1

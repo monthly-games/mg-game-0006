@@ -1,0 +1,118 @@
+
+archer_test.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hips
+  rotate: false
+  xy: 0, 0
+  size: 534, 894
+  orig: 534, 894
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: false
+  xy: 536, 0
+  size: 371, 615
+  orig: 371, 615
+  offset: 0, 0
+  index: -1
+leg_L
+  rotate: false
+  xy: 909, 0
+  size: 76, 414
+  orig: 76, 414
+  offset: 0, 0
+  index: -1
+leg_L_lower
+  rotate: false
+  xy: 987, 0
+  size: 76, 414
+  orig: 76, 414
+  offset: 0, 0
+  index: -1
+leg_L_upper
+  rotate: false
+  xy: 1065, 0
+  size: 76, 414
+  orig: 76, 414
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 1143, 0
+  size: 244, 327
+  orig: 244, 327
+  offset: 0, 0
+  index: -1
+leg_R
+  rotate: false
+  xy: 1389, 0
+  size: 86, 317
+  orig: 86, 317
+  offset: 0, 0
+  index: -1
+leg_R_lower
+  rotate: false
+  xy: 1477, 0
+  size: 86, 317
+  orig: 86, 317
+  offset: 0, 0
+  index: -1
+leg_R_upper
+  rotate: false
+  xy: 1565, 0
+  size: 86, 317
+  orig: 86, 317
+  offset: 0, 0
+  index: -1
+arm_R
+  rotate: false
+  xy: 1653, 0
+  size: 198, 216
+  orig: 198, 216
+  offset: 0, 0
+  index: -1
+arm_R_lower
+  rotate: false
+  xy: 0, 896
+  size: 198, 216
+  orig: 198, 216
+  offset: 0, 0
+  index: -1
+arm_R_upper
+  rotate: false
+  xy: 200, 896
+  size: 198, 216
+  orig: 198, 216
+  offset: 0, 0
+  index: -1
+arm_L
+  rotate: false
+  xy: 400, 896
+  size: 174, 192
+  orig: 174, 192
+  offset: 0, 0
+  index: -1
+arm_L_lower
+  rotate: false
+  xy: 576, 896
+  size: 174, 192
+  orig: 174, 192
+  offset: 0, 0
+  index: -1
+arm_L_upper
+  rotate: false
+  xy: 752, 896
+  size: 174, 192
+  orig: 174, 192
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 928, 896
+  size: 135, 94
+  orig: 135, 94
+  offset: 0, 0
+  index: -1

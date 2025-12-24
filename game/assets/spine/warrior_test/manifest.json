@@ -1,0 +1,72 @@
+{
+  "character_id": "warrior_test",
+  "type": "spine",
+  "files": [
+    {
+      "name": "arm_L.png",
+      "size": 25252
+    },
+    {
+      "name": "arm_L_lower.png",
+      "size": 24044
+    },
+    {
+      "name": "arm_L_upper.png",
+      "size": 22700
+    },
+    {
+      "name": "body.png",
+      "size": 29741
+    },
+    {
+      "name": "leg_L.png",
+      "size": 63842
+    },
+    {
+      "name": "leg_L_lower.png",
+      "size": 61635
+    },
+    {
+      "name": "leg_L_upper.png",
+      "size": 59149
+    },
+    {
+      "name": "leg_R.png",
+      "size": 159490
+    },
+    {
+      "name": "leg_R_lower.png",
+      "size": 155968
+    },
+    {
+      "name": "leg_R_upper.png",
+      "size": 144643
+    },
+    {
+      "name": "manifest.json",
+      "size": 966
+    },
+    {
+      "name": "skeleton.json",
+      "size": 10324
+    },
+    {
+      "name": "warrior_test.atlas",
+      "size": 1270
+    },
+    {
+      "name": "warrior_test.png",
+      "size": 941250
+    },
+    {
+      "name": "weapon.png",
+      "size": 436572
+    }
+  ],
+  "animations": [
+    "idle",
+    "run",
+    "attack1",
+    "die"
+  ]
+}
