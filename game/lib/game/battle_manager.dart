@@ -693,8 +693,9 @@ class BattleManager extends ChangeNotifier {
   }
 
   void sellHero(HeroEntity hero) {
-    if (_state != BattleState.preparation)
+    if (_state != BattleState.preparation) {
       return; // Can only sell in prep? Or anytime? Usually keys are locked in battle.
+    }
     // Refund 70% or flat 2 gold?
     // Cost is 3. Refund 2.
     gold.value += 2;
