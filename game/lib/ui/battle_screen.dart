@@ -36,10 +36,12 @@ class _BattleScreenState extends State<BattleScreen> {
       child: Consumer<BattleManager>(
         builder: (context, manager, child) {
           // Calculate player and enemy HP totals for HUD
-          final playerHeroes =
-              manager.heroes.where((h) => h.isPlayer && !h.isDead);
-          final enemyHeroes =
-              manager.heroes.where((h) => !h.isPlayer && !h.isDead);
+          final playerHeroes = manager.heroes.where(
+            (h) => h.isPlayer && !h.isDead,
+          );
+          final enemyHeroes = manager.heroes.where(
+            (h) => !h.isPlayer && !h.isDead,
+          );
 
           final playerHp = playerHeroes.fold<int>(
             0,
@@ -105,10 +107,7 @@ class _BattleScreenState extends State<BattleScreen> {
       children: [
         // Info Bar (simplified - main info in HUD)
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           color: Colors.black45,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,11 +214,21 @@ class _BattleScreenState extends State<BattleScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  heroData.heroClass.name[0] == 'a'
-                                      ? Icons.arrow_outward
-                                      : Icons.shield,
-                                  color: Colors.white70,
+                                SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: Image.asset(
+                                    "assets/images/${heroData.assetPath}",
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        heroData.heroClass.name[0] == 'a'
+                                            ? Icons.arrow_outward
+                                            : Icons.shield,
+                                        color: Colors.white70,
+                                      );
+                                    },
+                                  ),
                                 ),
                                 Text(
                                   heroData.name,
@@ -251,11 +260,7 @@ class _BattleScreenState extends State<BattleScreen> {
           ),
 
         // Battle Grid
-        Expanded(
-          child: Center(
-            child: _buildBattleField(manager, context),
-          ),
-        ),
+        Expanded(child: Center(child: _buildBattleField(manager, context))),
 
         // Bench Area
         Container(
@@ -529,12 +534,20 @@ class _BattleScreenState extends State<BattleScreen> {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 2),
             ),
-            child: Icon(
-              hero.data.heroClass.name[0] == 'a'
-                  ? Icons.arrow_outward
-                  : Icons.shield,
-              size: size * 0.3,
-              color: Colors.white,
+            child: ClipOval(
+              child: Image.asset(
+                "assets/images/${hero.data.assetPath}",
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    hero.data.heroClass.name[0] == 'a'
+                        ? Icons.arrow_outward
+                        : Icons.shield,
+                    size: size * 0.3,
+                    color: Colors.white,
+                  );
+                },
+              ),
             ),
           ),
 

@@ -79,6 +79,8 @@ flutter:
     - assets/spine/warrior_test/skeleton.json
     - assets/spine/warrior_test/warrior_test.atlas
     - assets/spine/warrior_test/warrior_test.png
+    - assets/images/
+    - assets/audio/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
