@@ -698,7 +698,7 @@ class BattleManager extends ChangeNotifier {
     }
     // Refund 70% or flat 2 gold?
     // Cost is 3. Refund 2.
-    gold.value += 2;
+    gold += 2;
     // Remove
     grid.clearCell(hero.row, hero.col);
     _allHeroes.remove(hero);
@@ -718,17 +718,17 @@ class BattleManager extends ChangeNotifier {
   void sellItem(ItemData item) {
     // Sell item from inventory
     if (inventory.contains(item)) {
-      gold.value += (item.cost * 0.5).toInt(); // 50% refund
+      gold += (item.cost * 0.5).toInt(); // 50% refund
       inventory.remove(item);
       notifyListeners();
     }
   }
 
   void _calculateInterest() {
-    int interest = (gold.value / 10).floor();
+    int interest = (gold / 10).floor();
     if (interest > 5) interest = 5;
     if (interest > 0) {
-      gold.value += interest;
+      gold += interest;
       debugPrint("Earned $interest Gold Interest!");
     }
   }
