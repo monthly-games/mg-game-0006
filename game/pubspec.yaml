@@ -28,7 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  google_mobile_ads: ^5.2.0
   flutter:
     sdk: flutter
 
@@ -39,7 +38,7 @@ dependencies:
   provider: ^6.1.2
   get_it: ^9.2.0
   mg_common_game:
-    path: ../libs/mg_common_game
+    path: ../../../repos/mg-common-game
   flame_spine: ^0.3.0+1
   audioplayers: ^6.5.1
   
@@ -50,9 +49,7 @@ dependency_overrides:
     path: packages/flame_spine
   
 
-
 dev_dependencies:
-  google_mobile_ads: ^5.2.0
   flutter_test:
     sdk: flutter
 

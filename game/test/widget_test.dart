@@ -23,7 +23,7 @@ void main() {
       GetIt.I.registerSingleton<ShopManager>(ShopManager());
     }
 
-    await tester.pumpWidget(const ArenaApp());
+    await tester.pumpWidget(const CardBattleApp());
 
     // Check Shop UI
     expect(find.text('Preparation Phase'), findsOneWidget);

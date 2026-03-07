@@ -579,7 +579,7 @@ void _registerCollections() {
   final collection = GetIt.I<CollectionManager>();
 
   // Characters 컬렉션
-  collection.registerCollection(Collection(
+  collection.registerCollection(const Collection(
     id: 'characters',
     name: '캐릭터',
     description: '모든 캐릭터를 수집하세요',
@@ -615,11 +615,11 @@ void _registerCollections() {
         rarity: CollectionRarity.legendary,
       ),
     ],
-    completionReward: CollectionReward(type: RewardType.gold, amount: 10000),
+    completionReward: CollectionReward(gold: 10000, gems: 500, experience: 2000),
     milestoneRewards: {
-      25: CollectionReward(type: RewardType.gold, amount: 1000),
-      50: CollectionReward(type: RewardType.gold, amount: 3000),
-      75: CollectionReward(type: RewardType.gold, amount: 5000),
+      25: CollectionReward(gold: 1000, gems: 50),
+      50: CollectionReward(gold: 3000, gems: 150),
+      75: CollectionReward(gold: 5000, gems: 300),
     },
   ));
 

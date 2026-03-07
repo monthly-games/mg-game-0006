@@ -707,7 +707,7 @@ class BattleManager extends ChangeNotifier {
     // If equipment? Refund items?
     // MVP: Items destroyed or returned to inventory?
     // Let's return items to inventory.
-    for (var item in hero.equippedItems) {
+    for (var item in hero.equipment) {
       if (inventory.length < 10) {
         inventory.add(item);
       }

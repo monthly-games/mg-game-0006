@@ -134,7 +134,7 @@ class VfxManager extends Component with HasGameRef {
                 final progress = particle.progress;
                 final opacity = (1.0 - progress).clamp(0.0, 1.0);
                 final size = (isCritical ? 5 : 3) * (1.0 - progress * 0.5);
-                canvas.drawCircle(Offset.zero, size, Paint()..color = color.withOpacity(opacity));
+                canvas.drawCircle(Offset.zero, size, Paint()..color = color.withValues(alpha: opacity));
               },
             ),
           );
@@ -162,7 +162,7 @@ class VfxManager extends Component with HasGameRef {
                 final progress = particle.progress;
                 final opacity = (1.0 - progress).clamp(0.0, 1.0);
                 final size = 5 * (1.0 - progress * 0.3);
-                canvas.drawCircle(Offset.zero, size, Paint()..color = color.withOpacity(opacity));
+                canvas.drawCircle(Offset.zero, size, Paint()..color = color.withValues(alpha: opacity));
               },
             ),
           );
@@ -186,7 +186,7 @@ class VfxManager extends Component with HasGameRef {
             child: ComputedParticle(
               renderer: (canvas, particle) {
                 final opacity = (1.0 - particle.progress * 0.5).clamp(0.0, 1.0);
-                canvas.drawCircle(Offset.zero, 4, Paint()..color = color.withOpacity(opacity));
+                canvas.drawCircle(Offset.zero, 4, Paint()..color = color.withValues(alpha: opacity));
               },
             ),
           );
@@ -212,7 +212,7 @@ class VfxManager extends Component with HasGameRef {
             child: ComputedParticle(
               renderer: (canvas, particle) {
                 final opacity = (1.0 - particle.progress).clamp(0.0, 1.0);
-                canvas.drawCircle(Offset.zero, 3, Paint()..color = color.withOpacity(opacity * 0.7));
+                canvas.drawCircle(Offset.zero, 3, Paint()..color = color.withValues(alpha: opacity * 0.7));
               },
             ),
           );
@@ -246,7 +246,7 @@ class VfxManager extends Component with HasGameRef {
                   else path.lineTo(cos(a) * size, sin(a) * size);
                 }
                 path.close();
-                canvas.drawPath(path, Paint()..color = color.withOpacity(opacity));
+                canvas.drawPath(path, Paint()..color = color.withValues(alpha: opacity));
               },
             ),
           );
@@ -269,7 +269,7 @@ class VfxManager extends Component with HasGameRef {
             child: ComputedParticle(
               renderer: (canvas, particle) {
                 final opacity = (1.0 - particle.progress).clamp(0.0, 1.0);
-                canvas.drawCircle(Offset.zero, 3, Paint()..color = color.withOpacity(opacity));
+                canvas.drawCircle(Offset.zero, 3, Paint()..color = color.withValues(alpha: opacity));
               },
             ),
           );
@@ -294,7 +294,7 @@ class VfxManager extends Component with HasGameRef {
                 final progress = particle.progress;
                 final opacity = (0.5 - progress * 0.5).clamp(0.0, 1.0);
                 final size = 6 + progress * 10;
-                canvas.drawCircle(Offset.zero, size, Paint()..color = Colors.grey.withOpacity(opacity));
+                canvas.drawCircle(Offset.zero, size, Paint()..color = Colors.grey.withValues(alpha: opacity));
               },
             ),
           );
@@ -318,7 +318,7 @@ class VfxManager extends Component with HasGameRef {
                 Offset(position.x, position.y),
                 radius,
                 Paint()
-                  ..color = color.withOpacity(opacity * 0.4)
+                  ..color = color.withValues(alpha: opacity * 0.4)
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 2,
               );
@@ -349,7 +349,7 @@ class VfxManager extends Component with HasGameRef {
                 final rotation = particle.progress * 3 * pi;
                 canvas.save();
                 canvas.rotate(rotation);
-                canvas.drawOval(const Rect.fromLTWH(-3, -2, 6, 4), Paint()..color = Colors.amber.withOpacity(opacity));
+                canvas.drawOval(const Rect.fromLTWH(-3, -2, 6, 4), Paint()..color = Colors.amber.withValues(alpha: opacity));
                 canvas.restore();
               },
             ),

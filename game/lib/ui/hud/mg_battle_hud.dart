@@ -3,6 +3,9 @@ import 'package:mg_common_game/core/ui/mg_ui.dart';
 
 /// MG UI 기반 오토배틀 HUD
 /// mg_common_game의 공통 UI 컴포넌트 활용
+///
+/// Navigation buttons (top-right): BattlePass (trophy), Gacha (star)
+/// These navigate to full-screen retention system UIs.
 class MGBattleHud extends StatelessWidget {
   final int gold;
   final int wave;
@@ -14,6 +17,7 @@ class MGBattleHud extends StatelessWidget {
   final double battleSpeed;
   final VoidCallback? onPause;
   final VoidCallback? onSpeedChange;
+  final int unclaimedBattlePassRewards;
 
   const MGBattleHud({
     super.key,
@@ -27,6 +31,7 @@ class MGBattleHud extends StatelessWidget {
     this.battleSpeed = 1.0,
     this.onPause,
     this.onSpeedChange,
+    this.unclaimedBattlePassRewards = 0,
   });
 
   @override
@@ -47,11 +52,33 @@ class MGBattleHud extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildWaveInfo(),
-                MGResourceBar(
-                  icon: Icons.monetization_on,
-                  value: _formatNumber(gold),
-                  iconColor: MGColors.gold,
-                  onTap: null,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // BattlePass navigation — trophy icon
+                    _RetentionNavButton(
+                      icon: Icons.emoji_events,
+                      tooltip: 'BattlePass',
+                      badgeCount: unclaimedBattlePassRewards,
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed('/battlepass'),
+                    ),
+                    SizedBox(width: MGSpacing.xs),
+                    // Gacha navigation — star icon
+                    _RetentionNavButton(
+                      icon: Icons.auto_awesome,
+                      tooltip: 'Gacha',
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed('/gacha'),
+                    ),
+                    SizedBox(width: MGSpacing.sm),
+                    MGResourceBar(
+                      icon: Icons.monetization_on,
+                      value: _formatNumber(gold),
+                      iconColor: MGColors.gold,
+                      onTap: null,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -227,5 +254,81 @@ class MGBattleHud extends StatelessWidget {
       return '${(number / 1000).toStringAsFixed(1)}K';
     }
     return number.toString();
+  }
+}
+
+// ============================================================
+// Retention Nav Button — HUD shortcut to BattlePass / Gacha
+// ============================================================
+
+class _RetentionNavButton extends StatelessWidget {
+  final IconData icon;
+  final String tooltip;
+  final int badgeCount;
+  final VoidCallback? onPressed;
+
+  const _RetentionNavButton({
+    required this.icon,
+    required this.tooltip,
+    this.badgeCount = 0,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.black54,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: MGColors.year1Accent.withValues(alpha: 0.4),
+            ),
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Center(
+                child: Icon(
+                  icon,
+                  color: MGColors.year1Accent,
+                  size: 22,
+                ),
+              ),
+              if (badgeCount > 0)
+                Positioned(
+                  top: -4,
+                  right: -4,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: MGColors.error,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 18,
+                      minHeight: 18,
+                    ),
+                    child: Text(
+                      '$badgeCount',
+                      style: const TextStyle(
+                        color: MGColors.textHighEmphasis,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
