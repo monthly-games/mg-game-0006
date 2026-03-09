@@ -32,7 +32,6 @@ class MGBattleHud extends StatelessWidget {
     this.onPause,
     this.onSpeedChange,
     this.unclaimedBattlePassRewards = 0,
-    this.onDailyHub,
   });
 
   @override
@@ -123,16 +122,6 @@ class MGBattleHud extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-        if (onDailyHub != null)
-          MGIconButton(
-            icon: Icons.calendar_today,
-            onPressed: onDailyHub,
-            size: 44,
-            backgroundColor: MGColors.info.withValues(alpha: 0.8),
-            color: MGColors.textHighEmphasis,
-            tooltip: 'Daily Hub',
-          ),
-        MGSpacing.hXs,
                 if (onPause != null)
                   MGIconButton(
                     icon: Icons.pause,
@@ -277,7 +266,6 @@ class _RetentionNavButton extends StatelessWidget {
   final String tooltip;
   final int badgeCount;
   final VoidCallback? onPressed;
-  final VoidCallback? onDailyHub;
 
   const _RetentionNavButton({
     required this.icon,
