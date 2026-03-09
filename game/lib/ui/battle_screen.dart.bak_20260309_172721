@@ -93,7 +93,6 @@ class _BattleScreenState extends State<BattleScreen> {
                         }
                       : null,
                   onSpeedChange: null,
-                  onDailyHub: () => Navigator.of(context).pushNamed('/daily-hub'),
                 ),
               ],
             ),
