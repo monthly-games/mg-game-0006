@@ -38,16 +38,9 @@ dependencies:
   provider: ^6.1.2
   get_it: ^9.2.0
   mg_common_game:
-    path: ../../../repos/mg-common-game
+    path: ../../../libs/mg_common_game
   flame_spine: ^0.3.0+1
   audioplayers: ^6.5.1
-  
-dependency_overrides:
-  spine_flutter:
-    path: packages/spine_flutter
-  flame_spine:
-    path: packages/flame_spine
-  
 
 dev_dependencies:
   flutter_test:
