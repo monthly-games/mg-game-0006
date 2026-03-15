@@ -328,14 +328,13 @@ class BattleManager extends ChangeNotifier {
     if (_state != BattleState.battle) return;
 
     _battleTime += dt;
-    bool stateChanged = false;
 
     // 0. Update Projectiles
     for (int i = projectiles.length - 1; i >= 0; i--) {
       projectiles[i].update(dt);
       if (projectiles[i].hasHit) {
         projectiles.removeAt(i);
-        stateChanged = true; // Update UI for hit/removal
+        // UI will update on next frame
       }
     }
 
@@ -388,7 +387,6 @@ class BattleManager extends ChangeNotifier {
         if (dist <= hero.data.stats.range) {
           if (hero.canAttack()) {
             _performAttack(hero, target);
-            stateChanged = true;
           }
         } else {
           // Move if not in range (Simple: 1 step per sec approx)
@@ -399,14 +397,12 @@ class BattleManager extends ChangeNotifier {
           if (_battleTime % 0.5 < 0.1) {
             // Hacky throttled movement
             _moveTowards(hero, target);
-            stateChanged = true;
           }
         }
       }
     }
 
     // 3. Check Win Condition
-    int playerCount = _allHeroes.where((h) => h.isPlayer && !h.isDead).length;
     // Check for Win
     bool enemiesAlive = _allHeroes.any((h) => !h.isPlayer && !h.isDead);
     if (!enemiesAlive) {
@@ -721,15 +717,6 @@ class BattleManager extends ChangeNotifier {
       gold += (item.cost * 0.5).toInt(); // 50% refund
       inventory.remove(item);
       notifyListeners();
-    }
-  }
-
-  void _calculateInterest() {
-    int interest = (gold / 10).floor();
-    if (interest > 5) interest = 5;
-    if (interest > 0) {
-      gold += interest;
-      debugPrint("Earned $interest Gold Interest!");
     }
   }
 

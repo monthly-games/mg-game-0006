@@ -368,7 +368,7 @@ class _GachaScreenState extends State<GachaScreen>
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: pools.length,
-        separatorBuilder: (_, __) => SizedBox(width: MGSpacing.sm),
+        separatorBuilder: (_, _) => SizedBox(width: MGSpacing.sm),
         itemBuilder: (context, index) {
           final pool = pools[index];
           final isSelected = pool.id == _selectedPoolId;
@@ -822,7 +822,6 @@ class _GachaScreenState extends State<GachaScreen>
       GachaRarity.superRare => MGColors.epic,
       GachaRarity.ultraRare => MGColors.legendary,
       GachaRarity.legendary => MGColors.mythic,
-      _ => MGColors.common,
     };
   }
 

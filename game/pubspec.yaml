@@ -42,6 +42,8 @@ dependencies:
   flame_spine: ^0.3.0+1
   audioplayers: ^6.5.1
 
+  firebase_core: any
+  firebase_analytics: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

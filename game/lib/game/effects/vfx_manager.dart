@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 /// VFX Manager for Hero Auto Battle Arena (MG-0006)
 /// Auto-Battler + PVP 게임 전용 이펙트 관리자
-class VfxManager extends Component with HasGameRef {
+class VfxManager extends Component with HasGameReference {
   VfxManager();
   final Random _random = Random();
 
@@ -15,38 +15,38 @@ class VfxManager extends Component with HasGameRef {
   // ============================================================
 
   void showAttackHit(Vector2 position, {Color color = Colors.white, bool isCritical = false}) {
-    gameRef.add(_createHitEffect(position: position, color: color, isCritical: isCritical));
+    game.add(_createHitEffect(position: position, color: color, isCritical: isCritical));
     if (isCritical) {
-      gameRef.add(_createSparkleEffect(position: position, color: Colors.yellow, count: 12));
+      game.add(_createSparkleEffect(position: position, color: Colors.yellow, count: 12));
     }
   }
 
   void showDamageNumber(Vector2 position, int damage, {bool isCritical = false, bool isHeal = false}) {
-    gameRef.add(_DamageNumber(position: position, damage: damage, isCritical: isCritical, isHeal: isHeal));
+    game.add(_DamageNumber(position: position, damage: damage, isCritical: isCritical, isHeal: isHeal));
   }
 
   void showSkillActivation(Vector2 position, Color skillColor) {
-    gameRef.add(_createConvergeEffect(position: position, color: skillColor));
-    gameRef.add(_createGroundCircle(position: position, color: skillColor));
+    game.add(_createConvergeEffect(position: position, color: skillColor));
+    game.add(_createGroundCircle(position: position, color: skillColor));
   }
 
   void showSkillHit(Vector2 position, Color skillColor, {double radius = 50}) {
-    gameRef.add(_createExplosionEffect(position: position, color: skillColor, count: 25, radius: radius));
+    game.add(_createExplosionEffect(position: position, color: skillColor, count: 25, radius: radius));
   }
 
   void showUnitDeath(Vector2 position, {bool isEnemy = true}) {
     final color = isEnemy ? Colors.red : Colors.blue;
-    gameRef.add(_createExplosionEffect(position: position, color: color, count: 20, radius: 50));
-    gameRef.add(_createSmokeEffect(position: position, count: 6));
+    game.add(_createExplosionEffect(position: position, color: color, count: 20, radius: 50));
+    game.add(_createSmokeEffect(position: position, count: 6));
   }
 
   void showBuffApply(Vector2 position, Color buffColor, {bool isDebuff = false}) {
-    gameRef.add(_createBuffEffect(position: position, color: buffColor, isDebuff: isDebuff));
+    game.add(_createBuffEffect(position: position, color: buffColor, isDebuff: isDebuff));
   }
 
   void showBattleStart(Vector2 centerPosition) {
-    gameRef.add(_BattleStartText(position: centerPosition));
-    gameRef.add(_createExplosionEffect(position: centerPosition, color: Colors.white, count: 30, radius: 80));
+    game.add(_BattleStartText(position: centerPosition));
+    game.add(_createExplosionEffect(position: centerPosition, color: Colors.white, count: 30, radius: 80));
   }
 
   void showVictory(Vector2 centerPosition) {
@@ -54,15 +54,15 @@ class VfxManager extends Component with HasGameRef {
       Future.delayed(Duration(milliseconds: i * 150), () {
         if (!isMounted) return;
         final offset = Vector2((_random.nextDouble() - 0.5) * 200, (_random.nextDouble() - 0.5) * 100);
-        gameRef.add(_createSparkleEffect(position: centerPosition + offset, color: Colors.amber, count: 15));
+        game.add(_createSparkleEffect(position: centerPosition + offset, color: Colors.amber, count: 15));
       });
     }
-    gameRef.add(_VictoryText(position: centerPosition));
+    game.add(_VictoryText(position: centerPosition));
   }
 
   void showDefeat(Vector2 centerPosition) {
-    gameRef.add(_createSmokeEffect(position: centerPosition, count: 20));
-    gameRef.add(_DefeatText(position: centerPosition));
+    game.add(_createSmokeEffect(position: centerPosition, count: 20));
+    game.add(_DefeatText(position: centerPosition));
   }
 
   // ============================================================
@@ -70,18 +70,18 @@ class VfxManager extends Component with HasGameRef {
   // ============================================================
 
   void showCardFlip(Vector2 position) {
-    gameRef.add(_createSparkleEffect(position: position, color: Colors.white, count: 10));
+    game.add(_createSparkleEffect(position: position, color: Colors.white, count: 10));
   }
 
   void showRankUp(Vector2 position) {
-    gameRef.add(_createRisingEffect(position: position, color: Colors.amber, count: 20, speed: 100));
-    gameRef.add(_RankUpText(position: position));
+    game.add(_createRisingEffect(position: position, color: Colors.amber, count: 20, speed: 100));
+    game.add(_RankUpText(position: position));
     _triggerScreenShake(intensity: 3, duration: 0.2);
   }
 
   void showUnitSummon(Vector2 position) {
-    gameRef.add(_createConvergeEffect(position: position, color: Colors.blue));
-    gameRef.add(_createGroundCircle(position: position, color: Colors.cyan));
+    game.add(_createConvergeEffect(position: position, color: Colors.blue));
+    game.add(_createGroundCircle(position: position, color: Colors.cyan));
   }
 
   // ============================================================
@@ -89,21 +89,21 @@ class VfxManager extends Component with HasGameRef {
   // ============================================================
 
   void showGoldGain(Vector2 position, int amount) {
-    gameRef.add(_createCoinEffect(position: position, count: (amount / 50).clamp(5, 15).toInt()));
+    game.add(_createCoinEffect(position: position, count: (amount / 50).clamp(5, 15).toInt()));
     showNumberPopup(position, '+$amount', color: Colors.amber);
   }
 
   void showExpGain(Vector2 position) {
-    gameRef.add(_createRisingEffect(position: position, color: Colors.lightBlue, count: 8, speed: 50));
+    game.add(_createRisingEffect(position: position, color: Colors.lightBlue, count: 8, speed: 50));
   }
 
   void showNumberPopup(Vector2 position, String text, {Color color = Colors.white}) {
-    gameRef.add(_NumberPopup(position: position, text: text, color: color));
+    game.add(_NumberPopup(position: position, text: text, color: color));
   }
 
   void _triggerScreenShake({double intensity = 5, double duration = 0.3}) {
-    if (gameRef.camera.viewfinder.children.isNotEmpty) {
-      gameRef.camera.viewfinder.add(
+    if (game.camera.viewfinder.children.isNotEmpty) {
+      game.camera.viewfinder.add(
         MoveByEffect(Vector2(intensity, 0), EffectController(duration: duration / 10, repeatCount: (duration * 10).toInt(), alternate: true)),
       );
     }
@@ -242,8 +242,11 @@ class VfxManager extends Component with HasGameRef {
                 final path = Path();
                 for (int j = 0; j < 4; j++) {
                   final a = (j * pi / 2);
-                  if (j == 0) path.moveTo(cos(a) * size, sin(a) * size);
-                  else path.lineTo(cos(a) * size, sin(a) * size);
+                  if (j == 0) {
+                    path.moveTo(cos(a) * size, sin(a) * size);
+                  } else {
+                    path.lineTo(cos(a) * size, sin(a) * size);
+                  }
                 }
                 path.close();
                 canvas.drawPath(path, Paint()..color = color.withValues(alpha: opacity));

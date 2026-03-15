@@ -14,7 +14,7 @@ const kBattleHeroMeta = SpineAssetMeta(
   atlasPath:
       'assets/spine/characters/battle_hero/battle_hero.atlas',
   skeletonPath:
-      'assets/spine/characters/battle_hero/battle_hero.skel',
+      'assets/spine/characters/battle_hero/battle_hero.json',
   animations: ['idle', 'walk', 'attack', 'hit'],
   defaultAnimation: 'idle',
   defaultMix: 0.2,
@@ -28,7 +28,7 @@ const kBattleMageMeta = SpineAssetMeta(
   atlasPath:
       'assets/spine/characters/battle_mage/battle_mage.atlas',
   skeletonPath:
-      'assets/spine/characters/battle_mage/battle_mage.skel',
+      'assets/spine/characters/battle_mage/battle_mage.json',
   animations: ['idle', 'walk', 'attack', 'hit'],
   defaultAnimation: 'idle',
   defaultMix: 0.2,
@@ -42,7 +42,7 @@ const kBattleAssassinMeta = SpineAssetMeta(
   atlasPath:
       'assets/spine/characters/battle_assassin/battle_assassin.atlas',
   skeletonPath:
-      'assets/spine/characters/battle_assassin/battle_assassin.skel',
+      'assets/spine/characters/battle_assassin/battle_assassin.json',
   animations: ['idle', 'walk', 'attack', 'hit'],
   defaultAnimation: 'idle',
   defaultMix: 0.2,

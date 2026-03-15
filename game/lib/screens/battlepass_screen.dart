@@ -213,7 +213,6 @@ class _BattlePassScreenState extends State<BattlePassScreen>
 
   // ── Header: season info, XP bar, premium button ──────────
   Widget _buildHeader(BPSeasonConfig season) {
-    final state = _bpManager.state;
     final tier = season.getTier(_bpManager.currentLevel);
     final requiredExp = tier?.requiredExp ?? season.expPerLevel;
 

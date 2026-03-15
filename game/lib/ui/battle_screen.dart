@@ -95,16 +95,13 @@ class _BattleScreenState extends State<BattleScreen> {
                   onSpeedChange: null,
                   onDailyHub: () => Navigator.of(context).pushNamed('/daily-hub'),
                   onGuildWar: () {
-                    game.pauseEngine();
-                    Navigator.of(context).pushNamed('/guild-war').then((_) => game.resumeEngine());
+Navigator.of(context).pushNamed('/guild-war');
                   },
                   onTournament: () {
-                    game.pauseEngine();
-                    Navigator.of(context).pushNamed('/tournament').then((_) => game.resumeEngine());
+Navigator.of(context).pushNamed('/tournament');
                   },
                   onSeasonalEvent: () {
-                    game.pauseEngine();
-                    Navigator.of(context).pushNamed('/seasonal-event').then((_) => game.resumeEngine());
+Navigator.of(context).pushNamed('/seasonal-event');
                   },
                 ),
               ],

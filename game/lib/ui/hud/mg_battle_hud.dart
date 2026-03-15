@@ -18,6 +18,10 @@ class MGBattleHud extends StatelessWidget {
   final VoidCallback? onPause;
   final VoidCallback? onSpeedChange;
   final int unclaimedBattlePassRewards;
+  final VoidCallback? onDailyHub;
+  final VoidCallback? onGuildWar;
+  final VoidCallback? onTournament;
+  final VoidCallback? onSeasonalEvent;
 
   const MGBattleHud({
     super.key,
@@ -310,10 +314,6 @@ class _RetentionNavButton extends StatelessWidget {
   final String tooltip;
   final int badgeCount;
   final VoidCallback? onPressed;
-  final VoidCallback? onDailyHub;
-  final VoidCallback? onGuildWar;
-  final VoidCallback? onTournament;
-  final VoidCallback? onSeasonalEvent;
 
   const _RetentionNavButton({
     required this.icon,
