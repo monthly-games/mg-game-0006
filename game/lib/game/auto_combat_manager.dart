@@ -7,10 +7,10 @@ import 'package:mg_common_game/systems/progression/upgrade_manager.dart';
 /// Computes real-time combat modifiers by reading current upgrade levels
 /// from [UpgradeManager]. Each parameter affects the battle simulation:
 ///
-/// - **Battle Speed** — tick rate multiplier for faster battles
-/// - **Auto-Skill Chance** — probability of auto-casting skills when ready
-/// - **AI Intelligence** — tier-based targeting sophistication
-/// - **Damage Multiplier** — flat damage boost for all player units
+/// - **Battle Speed** -- tick rate multiplier for faster battles
+/// - **Auto-Skill Chance** -- probability of auto-casting skills when ready
+/// - **AI Intelligence** -- tier-based targeting sophistication
+/// - **Damage Multiplier** -- flat damage boost for all player units
 class AutoCombatManager extends ChangeNotifier {
   // ── Upgrade IDs (match keys registered in UpgradeManager) ──────────
   static const String kBattleSpeed = 'battle_speed';
@@ -30,7 +30,7 @@ class AutoCombatManager extends ChangeNotifier {
     return _baseBattleSpeed + (upgrade?.currentValue ?? 0.0);
   }
 
-  /// Probability [0.0–1.0] that a unit auto-casts a skill when mana is full.
+  /// Probability [0.0-1.0] that a unit auto-casts a skill when mana is full.
   double get autoSkillChance {
     final upgrade = GetIt.I<UpgradeManager>().getUpgrade(kAutoSkillChance);
     return (_baseAutoSkillChance + (upgrade?.currentValue ?? 0.0)).clamp(0.0, 1.0);

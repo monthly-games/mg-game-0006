@@ -5,8 +5,8 @@ import 'package:mg_common_game/systems/progression/upgrade_manager.dart';
 /// Manages team composition limits and synergy bonuses.
 ///
 /// Reads upgrade levels from [UpgradeManager] to compute:
-/// - **Team Size** — maximum units deployable on the battle grid
-/// - **Synergy Bonus** — multiplier strengthening all active synergy effects
+/// - **Team Size** -- maximum units deployable on the battle grid
+/// - **Synergy Bonus** -- multiplier strengthening all active synergy effects
 class TeamManager extends ChangeNotifier {
   // ── Upgrade IDs (match keys registered in UpgradeManager) ──────────
   static const String kTeamSize = 'team_size';

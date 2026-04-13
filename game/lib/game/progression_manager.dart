@@ -6,8 +6,8 @@ import 'package:mg_common_game/systems/progression/upgrade_manager.dart';
 ///
 /// Tracks player level, XP accumulation, and prestige cycles. Reads
 /// upgrade levels from [UpgradeManager] to compute:
-/// - **XP Multiplier** — bonus XP rate from battles
-/// - **Prestige Points** — additional points earned per prestige reset
+/// - **XP Multiplier** -- bonus XP rate from battles
+/// - **Prestige Points** -- additional points earned per prestige reset
 class ProgressionManager extends ChangeNotifier {
   // ── Upgrade IDs (match keys registered in UpgradeManager) ──────────
   static const String kXpMultiplier = 'xp_multiplier';
@@ -33,7 +33,7 @@ class ProgressionManager extends ChangeNotifier {
   /// XP required to reach the next level (scales linearly with level).
   int get xpToNextLevel => _baseXpPerLevel * _playerLevel;
 
-  /// Progress fraction [0.0–1.0] toward the next level.
+  /// Progress fraction [0.0-1.0] toward the next level.
   double get levelProgress {
     final needed = xpToNextLevel;
     if (needed <= 0) return 0.0;

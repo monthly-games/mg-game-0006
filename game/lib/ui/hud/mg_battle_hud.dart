@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mg_common_game/core/ui/mg_ui.dart';
 
 /// MG UI 기반 오토배틀 HUD
@@ -63,7 +64,7 @@ class MGBattleHud extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // BattlePass navigation — trophy icon
+                    // BattlePass navigation -- trophy icon
                     _RetentionNavButton(
                       icon: Icons.emoji_events,
                       tooltip: 'BattlePass',
@@ -72,7 +73,7 @@ class MGBattleHud extends StatelessWidget {
                           .pushNamed('/battlepass'),
                     ),
                     SizedBox(width: MGSpacing.xs),
-                    // Gacha navigation — star icon
+                    // Gacha navigation -- star icon
                     _RetentionNavButton(
                       icon: Icons.auto_awesome,
                       tooltip: 'Gacha',
@@ -119,6 +120,9 @@ class MGBattleHud extends StatelessWidget {
 
           // 중앙 영역 확장 (배틀 필드)
           const Expanded(child: SizedBox()),
+          // Spine 캐릭터
+          _buildSpineCharacter(),
+          const SizedBox(height: 50),
 
           // 하단 HUD: 컨트롤
           Container(
@@ -231,7 +235,7 @@ class MGBattleHud extends StatelessWidget {
             color: Colors.white70,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: MGSpacing.xxs),
         MGLinearProgress(
           value: percentage,
           height: 12,
@@ -255,7 +259,7 @@ class MGBattleHud extends StatelessWidget {
             color: Colors.white70,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: MGSpacing.xxs),
         MGLinearProgress(
           value: percentage,
           height: 12,
@@ -271,7 +275,7 @@ class MGBattleHud extends StatelessWidget {
     return GestureDetector(
       onTap: onSpeedChange,
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(MGSpacing.xs),
         decoration: BoxDecoration(
           color: Colors.black54,
           borderRadius: BorderRadius.circular(8),
@@ -284,7 +288,7 @@ class MGBattleHud extends StatelessWidget {
               color: Colors.white,
               size: 20,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: MGSpacing.xxs),
             Text(
               '${battleSpeed.toStringAsFixed(0)}x',
               style: MGTextStyles.caption.copyWith(color: Colors.white),
@@ -303,10 +307,38 @@ class MGBattleHud extends StatelessWidget {
     }
     return number.toString();
   }
+
+  Widget _buildSpineCharacter() {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+      },
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.blue.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.blue.withAlpha(150), width: 2),
+        ),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.person, size: 24, color: Colors.white),
+            SizedBox(height: 2),
+            Text(
+              'Battle Commander',
+              style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 // ============================================================
-// Retention Nav Button — HUD shortcut to BattlePass / Gacha
+// Retention Nav Button -- HUD shortcut to BattlePass / Gacha
 // ============================================================
 
 class _RetentionNavButton extends StatelessWidget {
@@ -353,7 +385,7 @@ class _RetentionNavButton extends StatelessWidget {
                   top: -4,
                   right: -4,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(MGSpacing.xxs),
                     decoration: const BoxDecoration(
                       color: MGColors.error,
                       shape: BoxShape.circle,
@@ -379,4 +411,5 @@ class _RetentionNavButton extends StatelessWidget {
       ),
     );
   }
+
 }

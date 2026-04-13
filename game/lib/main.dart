@@ -1,8 +1,11 @@
+import 'package:mg_common_game/systems/progression/achievement_manager.dart';
+
 import 'package:mg_common_game/mg_common_game.dart' hide ProgressionManager;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:mg_common_game/core/economy/gold_manager.dart';
+import 'package:mg_common_game/l10n/extensions.dart';
 import 'game/auto_combat_manager.dart';
 import 'game/team_manager.dart';
 import 'game/progression_manager.dart';
@@ -12,7 +15,7 @@ import 'ui/main_menu_screen.dart';
 import 'screens/collection_screen.dart';
 
 // ============================================================
-// Hero Auto Battle — MG-0006
+// Hero Auto Battle -- MG-0006
 // Genre: RPG · Auto Battler · Year 1 Core
 // Phase 1 Week 3: Mechanic Enhancement
 //
@@ -23,32 +26,14 @@ import 'screens/collection_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeSystems();
-  // BattlePass 시스템
-  GetIt.I.registerSingleton(BattlePassManager());
-  // Gacha 시스템
-  GetIt.I.registerSingleton(GachaManager());
-  // Collection 시스템
-  if (!GetIt.I.isRegistered<CollectionManager>()) {
-    GetIt.I.registerSingleton(CollectionManager());
-  // ── P3 Engine Systems ─────────────────────────────────────
-  if (!GetIt.I.isRegistered<GuildWarManager>()) {
-    GetIt.I.registerSingleton(GuildWarManager());
-  }
-  if (!GetIt.I.isRegistered<TournamentManager>()) {
-    GetIt.I.registerSingleton(TournamentManager());
-  }
-  if (!GetIt.I.isRegistered<SeasonalContentManager>()) {
-    GetIt.I.registerSingleton(SeasonalContentManager());
-  }
-_registerCollections();
-  }
+  _registerCollections();
   _setupGacha();
   _setupBattlePass();
   runApp(const CardBattleApp());
 }
 
 // ============================================================
-// System Initialization — DI registration in dependency order
+// System Initialization -- DI registration in dependency order
 // ============================================================
 
 /// Initialize all DI-registered systems in correct dependency order.
@@ -85,20 +70,42 @@ Future<void> _initializeSystems() async {
 
   if (!di.isRegistered<ProgressionManager>()) {
     di.registerSingleton<ProgressionManager>(ProgressionManager());
+  }
   // ── DailyQuest for DailyHub ───────────────────────────────
   if (!GetIt.I.isRegistered<DailyQuestManager>()) {
-    GetIt.I.registerSingleton(DailyQuestManager());
-  // ── Retention Systems for DailyHub ────────────────────────
-  if (!GetIt.I.isRegistered<LoginRewardsManager>()) {
-    GetIt.I.registerSingleton(LoginRewardsManager());
-  }
-  if (!GetIt.I.isRegistered<StreakManager>()) {
-    GetIt.I.registerSingleton(StreakManager());
-  }
-  if (!GetIt.I.isRegistered<DailyChallengeManager>()) {
-    GetIt.I.registerSingleton(DailyChallengeManager());
-  }
-  }
+    final questManager = DailyQuestManager();
+
+    // Register Hero Auto Battle themed quests
+    questManager.registerQuest(DailyQuest(
+      id: 'autobattle_wins_10',
+      title: 'Victorious Hero',
+      description: 'Win 10 auto battles',
+      targetValue: 10,
+      goldReward: 200,
+      xpReward: 50,
+    ));
+
+    questManager.registerQuest(DailyQuest(
+      id: 'autobattle_skills_5',
+      title: 'Skill Master',
+      description: 'Use 5 special skills in battle',
+      targetValue: 5,
+      goldReward: 150,
+      xpReward: 40,
+    ));
+
+    questManager.registerQuest(DailyQuest(
+      id: 'autobattle_heroes_3',
+      title: 'Hero Collector',
+      description: 'Deploy 3 different heroes',
+      targetValue: 3,
+      goldReward: 180,
+      xpReward: 60,
+    ));
+
+    di.registerSingleton<DailyQuestManager>(questManager);
+    questManager.loadQuestData();
+    questManager.checkAndResetIfNeeded();
   }
 
   // Apply saved upgrade effects to managers
@@ -106,7 +113,7 @@ Future<void> _initializeSystems() async {
 }
 
 // ============================================================
-// Upgrade Registration — 8 auto-battler upgrades
+// Upgrade Registration -- 8 auto-battler upgrades
 // Categories: auto-combat (4), team (2), progression (2)
 // ============================================================
 
@@ -231,7 +238,7 @@ void _applyUpgradeEffects() {
 }
 
 // ============================================================
-// App Root — MultiProvider wraps all game state
+// App Root -- MultiProvider wraps all game state
 // ============================================================
 
 class CardBattleApp extends StatelessWidget {
@@ -255,33 +262,33 @@ class CardBattleApp extends StatelessWidget {
           '/upgrades': (_) => const UpgradeScreen(),
           '/battlepass': (_) => const BattlePassScreen(),
           '/gacha': (_) => const GachaScreen(),
-        '/daily-hub': (context) => DailyHubScreen(
-          questManager: GetIt.I<DailyQuestManager>(),
-          loginRewardsManager: GetIt.I<LoginRewardsManager>(),
-          streakManager: GetIt.I<StreakManager>(),
-          challengeManager: GetIt.I<DailyChallengeManager>(),
-          accentColor: MGColors.primaryAction,
-          onClose: () => Navigator.pop(context),
-        ),
-        
+        // Temporarily disabled - managers not yet implemented
+        // '/daily-hub': (context) => DailyHubScreen(
+        //   questManager: GetIt.I<DailyQuestManager>(),
+        //   loginRewardsManager: GetIt.I<LoginRewardsManager>(),
+        //   streakManager: GetIt.I<StreakManager>(),
+        //   challengeManager: GetIt.I<DailyChallengeManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        // ),
           '/collection': (context) => CollectionScreen(
             collectionManager: GetIt.I<CollectionManager>(),
           ),
-          '/guild-war': (context) => GuildWarScreen(
-            guildWarManager: GetIt.I<GuildWarManager>(),
-            accentColor: MGColors.primaryAction,
-            onClose: () => Navigator.pop(context),
-            ),
-          '/tournament': (context) => TournamentScreen(
-            tournamentManager: GetIt.I<TournamentManager>(),
-            accentColor: MGColors.primaryAction,
-            onClose: () => Navigator.pop(context),
-            ),
-          '/seasonal-event': (context) => SeasonalEventScreen(
-            seasonalContentManager: GetIt.I<SeasonalContentManager>(),
-            accentColor: MGColors.primaryAction,
-            onClose: () => Navigator.pop(context),
-            ),
+        // '/guild-war': (context) => GuildWarScreen(
+        //   guildWarManager: GetIt.I<GuildWarManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        //   ),
+        // '/tournament': (context) => TournamentScreen(
+        //   tournamentManager: GetIt.I<TournamentManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        //   ),
+        // '/seasonal-event': (context) => SeasonalEventScreen(
+        //   seasonalContentManager: GetIt.I<SeasonalContentManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        //   ),
 },
       ),
     );
@@ -320,7 +327,7 @@ class CardBattleApp extends StatelessWidget {
 }
 
 // ============================================================
-// Upgrade Screen — full-screen upgrade browser with gold display
+// Upgrade Screen -- full-screen upgrade browser with gold display
 // ============================================================
 
 class UpgradeScreen extends StatelessWidget {
@@ -338,18 +345,12 @@ class UpgradeScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.monetization_on, color: MGColors.gold, size: 20),
                 const SizedBox(width: 4),
-                StreamBuilder<int>(
-                  stream: GetIt.I<GoldManager>().onGoldChanged,
-                  initialData: GetIt.I<GoldManager>().currentGold,
-                  builder: (context, snapshot) {
-                    return Text(
-                      '${snapshot.data ?? 0}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  },
+                Text(
+                  '${GetIt.I<GoldManager>().currentGold}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -362,7 +363,7 @@ class UpgradeScreen extends StatelessWidget {
 }
 
 // ============================================================
-// Upgrade List Panel — categorized upgrade browser with purchase
+// Upgrade List Panel -- categorized upgrade browser with purchase
 // ============================================================
 
 class UpgradeListPanel extends StatelessWidget {
@@ -427,7 +428,7 @@ class UpgradeListPanel extends StatelessWidget {
 }
 
 // ============================================================
-// Upgrade Item Tile — individual upgrade row with purchase button
+// Upgrade Item Tile -- individual upgrade row with purchase button
 // ============================================================
 
 class _UpgradeItemTile extends StatelessWidget {

@@ -1,10 +1,12 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../game/battle_manager.dart';
 import '../game/core/hero_entity.dart';
 import '../game/core/projectile_entity.dart';
 import '../game/core/item_data.dart';
-import 'hud/mg_battle_hud.dart';
+import 'hud/mg_battle_hud.dart';import 'package:mg_common_game/l10n/localization.dart';
+
 
 class BattleScreen extends StatefulWidget {
   const BattleScreen({super.key});
@@ -135,18 +137,18 @@ Navigator.of(context).pushNamed('/seasonal-event');
                     ElevatedButton.icon(
                       onPressed: manager.gold >= 2 ? manager.rerollShop : null,
                       icon: const Icon(Icons.refresh),
-                      label: const Text("Reroll (2g)"),
+                      label: Text('Reroll (2g)'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: MGSpacing.xs),
                     ElevatedButton(
                       onPressed: manager.startBattle,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                       ),
-                      child: const Text("START BATTLE"),
+                      child: const Text('Start Battle'),
                     ),
                   ],
                 ),
@@ -164,7 +166,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
                 // Synergy List
                 Container(
                   width: 140,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(MGSpacing.xs),
                   color: Colors.black12,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +179,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: MGSpacing.xxs),
                       Expanded(
                         child: ListView.builder(
                           itemCount: manager.activeSynergies.length,
@@ -202,7 +204,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
                 Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(MGSpacing.xs),
                     itemCount: manager.shop.length,
                     itemBuilder: (context, index) {
                       final heroData = manager.shop[index];
@@ -249,7 +251,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: MGSpacing.xxs),
                                 const Text(
                                   "Cost: 3g",
                                   style: TextStyle(
@@ -276,7 +278,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
         Container(
           height: 100,
           color: Colors.brown[900],
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(MGSpacing.xs),
           child: Row(
             children: [
               const RotatedBox(
@@ -286,7 +288,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
                   style: TextStyle(color: Colors.white70, fontSize: 10),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: MGSpacing.xsMd),
               // Inventory UI
               Expanded(
                 child: ListView.builder(
@@ -531,7 +533,7 @@ Navigator.of(context).pushNamed('/seasonal-event');
     return Container(
       width: size,
       height: size,
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(MGSpacing.xxs),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -602,8 +604,8 @@ Navigator.of(context).pushNamed('/seasonal-event');
               color: Colors.amber,
             ),
           ),
-          const SizedBox(height: 20),
-          const SizedBox(height: 20),
+          const SizedBox(height: MGSpacing.mdLg),
+          const SizedBox(height: MGSpacing.mdLg),
           if (manager.playerWon == true &&
               manager.currentRound < manager.maxRounds)
             ElevatedButton(

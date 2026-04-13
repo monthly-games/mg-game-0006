@@ -1,5 +1,5 @@
 // ============================================================
-// Gacha Screen — MG-0006 Hero Auto Battle
+// Gacha Screen -- MG-0006 Hero Auto Battle
 // Genre: RPG Auto Battler · Retention System UI
 //
 // Firebase Analytics Events:
@@ -9,9 +9,16 @@
 //   - gacha_history_viewed: History/collection tab opened
 //
 // Template: This file is the canonical template for 47 remaining games.
-// ============================================================
+// ============================================================import 'package:mg_common_game/l10n/localization.dart';
+
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mg_common_game/core/ui/mg_ui.dart';
+import 'package:mg_common_game/core/ui/widgets/gacha/gacha_pull_animation.dart';
+import 'package:mg_common_game/systems/gacha/gacha_manager.dart';
+import '../l10n/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mg_common_game/core/ui/mg_ui.dart';
@@ -207,7 +214,7 @@ class _GachaScreenState extends State<GachaScreen>
                 Padding(
                   padding: EdgeInsets.all(MGSpacing.lg),
                   child: MGButton(
-                    label: 'OK',
+                    label: context.l10n.ui_general_diwali_token_collection,
                     onPressed: _dismissResults,
                     size: MGButtonSize.large,
                     width: double.infinity,
@@ -578,7 +585,7 @@ class _GachaScreenState extends State<GachaScreen>
         // Single pull
         Expanded(
           child: GachaPullButton(
-            label: '1x Pull',
+            label: context.l10n.ui_general_1x_pull,
             cost: _kSinglePullCost,
             onPressed: _onSinglePull,
           ),
@@ -587,7 +594,7 @@ class _GachaScreenState extends State<GachaScreen>
         // Multi pull (10x)
         Expanded(
           child: GachaPullButton(
-            label: '10x Pull',
+            label: context.l10n.ui_general_10x_pull,
             cost: _kMultiPullCost,
             onPressed: _onMultiPull,
           ),
@@ -820,6 +827,7 @@ class _GachaScreenState extends State<GachaScreen>
       GachaRarity.normal => MGColors.common,
       GachaRarity.rare => MGColors.rare,
       GachaRarity.superRare => MGColors.epic,
+      GachaRarity.superRare => MGColors.legendary,
       GachaRarity.ultraRare => MGColors.legendary,
       GachaRarity.legendary => MGColors.mythic,
     };
