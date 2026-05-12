@@ -5,7 +5,7 @@ import '../game/battle_manager.dart';
 import '../game/core/hero_entity.dart';
 import '../game/core/projectile_entity.dart';
 import '../game/core/item_data.dart';
-import 'hud/mg_battle_hud.dart';import 'package:mg_common_game/l10n/localization.dart';
+import 'hud/mg_battle_hud.dart';
 
 
 class BattleScreen extends StatefulWidget {

@@ -20,7 +20,6 @@ import 'package:mg_common_game/core/ui/mg_ui.dart';
 import 'package:mg_common_game/core/ui/widgets/battlepass/battlepass_tier_list.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_config.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_manager.dart';
-import '../l10n/localization.dart';
 
 /// Full-screen BattlePass UI with season progress, tier rewards,
 /// mission list, and premium upgrade flow.
@@ -163,7 +162,7 @@ class _BattlePassScreenState extends State<BattlePassScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.notification_rewardslength_rewards_claimed),
+            content: Text('${rewards.length} rewards claimed'),
             backgroundColor: MGColors.success,
             duration: const Duration(seconds: 2),
           ),
@@ -173,10 +172,9 @@ class _BattlePassScreenState extends State<BattlePassScreen>
   }
 
   void _showRewardSnackBar(List<BPReward> rewards, int level) {
-    final names = rewards.map((r) => r.nameKr).join(', ');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(context.l10n.progress_tier_level_names),
+        content: Text('Tier $level rewards claimed'),
         backgroundColor: MGColors.success,
         duration: const Duration(seconds: 2),
       ),
@@ -189,7 +187,7 @@ class _BattlePassScreenState extends State<BattlePassScreen>
 
     if (season == null) {
       return Scaffold(
-        appBar: AppBar(title: Text(context.l10n.progress_level_battlepasscurrentlevel)),
+        appBar: AppBar(title: const Text('Battle Pass')),
         body: const Center(
           child: Text(
             'No active season',
@@ -238,7 +236,7 @@ class _BattlePassScreenState extends State<BattlePassScreen>
               const Spacer(),
               if (_bpManager.unclaimedRewardCount > 0)
                 MGButton(
-                  label: context.l10n.notification_claim_all__bpmanagerunclaimedrewardcount,
+                  label: 'Claim all (${_bpManager.unclaimedRewardCount})',
                   size: MGButtonSize.small,
                   icon: Icons.done_all,
                   backgroundColor: MGColors.success,

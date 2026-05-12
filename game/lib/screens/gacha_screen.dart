@@ -18,12 +18,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mg_common_game/core/ui/mg_ui.dart';
 import 'package:mg_common_game/core/ui/widgets/gacha/gacha_pull_animation.dart';
 import 'package:mg_common_game/systems/gacha/gacha_manager.dart';
-import '../l10n/localization.dart';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:mg_common_game/core/ui/mg_ui.dart';
-import 'package:mg_common_game/core/ui/widgets/gacha/gacha_pull_animation.dart';
-import 'package:mg_common_game/systems/gacha/gacha_manager.dart';
 import 'package:mg_common_game/systems/gacha/gacha_pool.dart';
 
 /// Gacha pull costs (game-specific tuning constants).
@@ -214,7 +208,7 @@ class _GachaScreenState extends State<GachaScreen>
                 Padding(
                   padding: EdgeInsets.all(MGSpacing.lg),
                   child: MGButton(
-                    label: context.l10n.ui_general_diwali_token_collection,
+                    label: 'View collection',
                     onPressed: _dismissResults,
                     size: MGButtonSize.large,
                     width: double.infinity,
@@ -585,7 +579,7 @@ class _GachaScreenState extends State<GachaScreen>
         // Single pull
         Expanded(
           child: GachaPullButton(
-            label: context.l10n.ui_general_1x_pull,
+            label: '1x Pull',
             cost: _kSinglePullCost,
             onPressed: _onSinglePull,
           ),
@@ -594,7 +588,7 @@ class _GachaScreenState extends State<GachaScreen>
         // Multi pull (10x)
         Expanded(
           child: GachaPullButton(
-            label: context.l10n.ui_general_10x_pull,
+            label: '10x Pull',
             cost: _kMultiPullCost,
             onPressed: _onMultiPull,
           ),
@@ -826,7 +820,6 @@ class _GachaScreenState extends State<GachaScreen>
     return switch (rarity) {
       GachaRarity.normal => MGColors.common,
       GachaRarity.rare => MGColors.rare,
-      GachaRarity.superRare => MGColors.epic,
       GachaRarity.superRare => MGColors.legendary,
       GachaRarity.ultraRare => MGColors.legendary,
       GachaRarity.legendary => MGColors.mythic,
