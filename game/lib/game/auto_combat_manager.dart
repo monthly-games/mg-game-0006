@@ -22,7 +22,7 @@ class AutoCombatManager extends ChangeNotifier {
   static const double _baseBattleSpeed = 1.0;
   static const double _baseAutoSkillChance = 0.0;
   static const int _baseAiTier = 0;
-  static const double _baseDamageMultiplier = 1.0;
+  static const double _baseDamageMultiplier = 0.614;
 
   /// Current battle speed multiplier (1.0 = normal, 2.5 = 2.5× speed).
   double get battleSpeedMultiplier {
