@@ -1,0 +1,764 @@
+
+// --- ROADMAP v8 START ---
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:mg_common_game/mg_common_game.dart';
+import 'package:package:game/main.dart' as original;
+
+void main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    if (!const bool.fromEnvironment('SKIP_FIREBASE')) {
+      await Firebase.initializeApp();
+      final remoteConfig = FirebaseRemoteConfig.instance;
+      await remoteConfig.setDefaults({'feature_battlepass_enabled': true, 'difficulty_modifier': 1.0});
+      await remoteConfig.fetchAndActivate();
+    }
+  } catch (e) {}
+  
+  final di = GetIt.I;
+  void safeReg<T extends Object>(T instance) {
+    try { if (!di.isRegistered<T>()) di.registerSingleton<T>(instance); } catch (e) {}
+  }
+
+  try { safeReg<GoldManager>(GoldManager()); } catch (e) {}
+  try { safeReg<SaveSystem>(LocalSaveSystem()); } catch (e) {}
+  try { safeReg<EventBus>(EventBus()); } catch (e) {}
+  try { safeReg<AudioManager>(AudioManager()); } catch (e) {}
+  try { safeReg<ToastManager>(ToastManager()); } catch (e) {}
+  try { safeReg<DailyQuestManagerV2>(DailyQuestManagerV2()); } catch (e) {}
+  try { safeReg<BattlePassManager>(BattlePassManager()); } catch (e) {}
+  try { safeReg<GachaManager>(GachaManager()); } catch (e) {}
+  try { safeReg<CollectionManager>(CollectionManager()); } catch (e) {}
+  try { safeReg<ProgressionManager>(ProgressionManager()); } catch (e) {}
+  try { safeReg<AchievementManager>(AchievementManager()); } catch (e) {}
+  try { safeReg<UpgradeManager>(UpgradeManager()); } catch (e) {}
+  try { safeReg<SettingsManager>(SettingsManager()); } catch (e) {}
+  try { safeReg<TutorialManager>(TutorialManager()); } catch (e) {}
+  
+  runApp(const RoadmapFinalApp());
+}
+
+class RoadmapFinalApp extends StatelessWidget {
+  const RoadmapFinalApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MGAccessibilityProvider(
+      settings: MGAccessibilitySettings.defaults,
+      onSettingsChanged: (settings) {},
+      child: MaterialApp(
+        title: 'Monthly Game - MG-0006',
+        theme: ThemeData.dark(useMaterial3: true).copyWith(
+          primaryColor: Colors.indigo,
+          scaffoldBackgroundColor: const Color(0xFF0F0F1E),
+        ),
+        home: const RoadmapHub(),
+      ),
+    );
+  }
+}
+
+class RoadmapHub extends StatelessWidget {
+  const RoadmapHub({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0F0F1E),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MGAdaptiveText('MG-0006 STABILIZED', style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            const Text('Roadmap Integration Active', style: TextStyle(color: Colors.indigoAccent)),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (c) => original.CardBattleApp())),
+              child: const Text('LAUNCH ORIGINAL GAME'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+// --- ROADMAP v8 END ---
+
+import 'package:mg_common_game/systems/progression/achievement_manager.dart';
+
+import 'package:mg_common_game/mg_common_game.dart' hide ProgressionManager;
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import 'package:mg_common_game/core/economy/gold_manager.dart';
+import 'package:mg_common_game/l10n/extensions.dart';
+import 'game/auto_combat_manager.dart';
+import 'game/team_manager.dart';
+import 'game/progression_manager.dart';
+import 'screens/battlepass_screen.dart';
+import 'screens/gacha_screen.dart';
+import 'ui/main_menu_screen.dart';
+import 'screens/collection_screen.dart';
+
+// ============================================================
+// Hero Auto Battle -- MG-0006
+// Genre: RPG · Auto Battler · Year 1 Core
+// Phase 1 Week 3: Mechanic Enhancement
+//
+// Core loop: Build Team → Deploy → Auto-Battle → Upgrade → Progress
+// Subsystems: Auto-combat tuning, Team synergies, Progression, Prestige
+// ============================================================
+
+void hiddenMain() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initializeSystems();
+  _registerCollections();
+  _setupGacha();
+  _setupBattlePass();
+  runApp(const CardBattleApp());
+}
+
+// ============================================================
+// System Initialization -- DI registration in dependency order
+// ============================================================
+
+/// Initialize all DI-registered systems in correct dependency order.
+/// mg_common_game systems first, then game-specific managers.
+Future<void> _initializeSystems() async {
+  final di = GetIt.I;
+
+  // ── mg_common_game core systems ──────────────────────────
+  if (!di.isRegistered<GoldManager>()) {
+    di.registerSingleton<GoldManager>(GoldManager());
+  }
+
+  if (!di.isRegistered<AudioManager>()) {
+    final audioManager = AudioManager();
+    di.registerSingleton<AudioManager>(audioManager);
+    audioManager.initialize();
+  }
+
+  if (!di.isRegistered<UpgradeManager>()) {
+    final upgrades = UpgradeManager();
+    di.registerSingleton<UpgradeManager>(upgrades);
+    _registerUpgrades(upgrades);
+    await upgrades.loadUpgrades();
+  }
+
+  // ── Game-specific managers ───────────────────────────────
+  if (!di.isRegistered<AutoCombatManager>()) {
+    di.registerSingleton<AutoCombatManager>(AutoCombatManager());
+  }
+
+  if (!di.isRegistered<TeamManager>()) {
+    di.registerSingleton<TeamManager>(TeamManager());
+  }
+
+  if (!di.isRegistered<ProgressionManager>()) {
+    di.registerSingleton<ProgressionManager>(ProgressionManager());
+  }
+  // ── DailyQuest for DailyHub ───────────────────────────────
+  if (!GetIt.I.isRegistered<DailyQuestManager>()) {
+    final questManager = DailyQuestManager();
+
+    // Register Hero Auto Battle themed quests
+    questManager.registerQuest(DailyQuest(
+      id: 'autobattle_wins_10',
+      title: 'Victorious Hero',
+      description: 'Win 10 auto battles',
+      targetValue: 10,
+      goldReward: 200,
+      xpReward: 50,
+    ));
+
+    questManager.registerQuest(DailyQuest(
+      id: 'autobattle_skills_5',
+      title: 'Skill Master',
+      description: 'Use 5 special skills in battle',
+      targetValue: 5,
+      goldReward: 150,
+      xpReward: 40,
+    ));
+
+    questManager.registerQuest(DailyQuest(
+      id: 'autobattle_heroes_3',
+      title: 'Hero Collector',
+      description: 'Deploy 3 different heroes',
+      targetValue: 3,
+      goldReward: 180,
+      xpReward: 60,
+    ));
+
+    di.registerSingleton<DailyQuestManager>(questManager);
+    questManager.loadQuestData();
+    questManager.checkAndResetIfNeeded();
+  }
+
+  // Apply saved upgrade effects to managers
+  _applyUpgradeEffects();
+}
+
+// ============================================================
+// Upgrade Registration -- 8 auto-battler upgrades
+// Categories: auto-combat (4), team (2), progression (2)
+// ============================================================
+
+/// Upgrade category groupings for UI display.
+const Map<String, List<String>> upgradeCategories = {
+  'Auto-Combat': [
+    AutoCombatManager.kBattleSpeed,
+    AutoCombatManager.kAutoSkillChance,
+    AutoCombatManager.kAiIntelligence,
+    AutoCombatManager.kDamageMultiplier,
+  ],
+  'Team': [
+    TeamManager.kTeamSize,
+    TeamManager.kSynergyBonus,
+  ],
+  'Progression': [
+    ProgressionManager.kXpMultiplier,
+    ProgressionManager.kPrestigePoints,
+  ],
+};
+
+/// Category display icons for the upgrade browser.
+const Map<String, IconData> upgradeCategoryIcons = {
+  'Auto-Combat': Icons.flash_on,
+  'Team': Icons.groups,
+  'Progression': Icons.trending_up,
+};
+
+void _registerUpgrades(UpgradeManager manager) {
+  // ── Auto-combat upgrades (4) ──────────────────────────────
+
+  manager.registerUpgrade(Upgrade(
+    id: AutoCombatManager.kBattleSpeed,
+    name: 'Battle Tempo',
+    description: 'Increase battle speed by 15% per level.',
+    maxLevel: 10,
+    baseCost: 100,
+    costMultiplier: 1.5,
+    valuePerLevel: 0.15,
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: AutoCombatManager.kAutoSkillChance,
+    name: 'Skill Instinct',
+    description: 'Heroes gain 8% auto-cast chance per level.',
+    maxLevel: 10,
+    baseCost: 150,
+    costMultiplier: 1.6,
+    valuePerLevel: 0.08,
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: AutoCombatManager.kAiIntelligence,
+    name: 'Tactical Mind',
+    description: 'Improve AI targeting intelligence.',
+    maxLevel: 5,
+    baseCost: 200,
+    costMultiplier: 1.8,
+    valuePerLevel: 1.0,
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: AutoCombatManager.kDamageMultiplier,
+    name: 'War Drums',
+    description: 'Boost all hero damage by 10% per level.',
+    maxLevel: 15,
+    baseCost: 120,
+    costMultiplier: 1.45,
+    valuePerLevel: 0.10,
+  ));
+
+  // ── Team upgrades (2) ─────────────────────────────────────
+
+  manager.registerUpgrade(Upgrade(
+    id: TeamManager.kTeamSize,
+    name: 'Army Expansion',
+    description: 'Deploy one additional hero per level.',
+    maxLevel: 4,
+    baseCost: 300,
+    costMultiplier: 2.0,
+    valuePerLevel: 1.0,
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: TeamManager.kSynergyBonus,
+    name: 'Bond of Heroes',
+    description: 'Strengthen synergy effects by 12% per level.',
+    maxLevel: 8,
+    baseCost: 180,
+    costMultiplier: 1.5,
+    valuePerLevel: 0.12,
+  ));
+
+  // ── Progression upgrades (2) ──────────────────────────────
+
+  manager.registerUpgrade(Upgrade(
+    id: ProgressionManager.kXpMultiplier,
+    name: 'Battle Wisdom',
+    description: 'Increase XP gained from battles by 15% per level.',
+    maxLevel: 10,
+    baseCost: 80,
+    costMultiplier: 1.4,
+    valuePerLevel: 0.15,
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: ProgressionManager.kPrestigePoints,
+    name: 'Legacy of Champions',
+    description: 'Earn additional prestige points per reset.',
+    maxLevel: 5,
+    baseCost: 500,
+    costMultiplier: 2.5,
+    valuePerLevel: 1.0,
+  ));
+}
+
+/// Refresh all game-specific managers so they re-read upgrade values.
+void _applyUpgradeEffects() {
+  GetIt.I<AutoCombatManager>().refresh();
+  GetIt.I<TeamManager>().refresh();
+  GetIt.I<ProgressionManager>().refresh();
+}
+
+// ============================================================
+// App Root -- MultiProvider wraps all game state
+// ============================================================
+
+class CardBattleApp extends StatelessWidget {
+  const CardBattleApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: GetIt.I<UpgradeManager>()),
+        ChangeNotifierProvider.value(value: GetIt.I<AutoCombatManager>()),
+        ChangeNotifierProvider.value(value: GetIt.I<TeamManager>()),
+        ChangeNotifierProvider.value(value: GetIt.I<ProgressionManager>()),
+      ],
+      child: MaterialApp(
+        title: 'Hero Auto Battle',
+        theme: _buildTheme(),
+        home: const MainMenuScreen(),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/upgrades': (_) => const UpgradeScreen(),
+          '/battlepass': (_) => const BattlePassScreen(),
+          '/gacha': (_) => const GachaScreen(),
+        // Temporarily disabled - managers not yet implemented
+        // '/daily-hub': (context) => DailyHubScreen(
+        //   questManager: GetIt.I<DailyQuestManager>(),
+        //   loginRewardsManager: GetIt.I<LoginRewardsManager>(),
+        //   streakManager: GetIt.I<StreakManager>(),
+        //   challengeManager: GetIt.I<DailyChallengeManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        // ),
+          '/collection': (context) => CollectionScreen(
+            collectionManager: GetIt.I<CollectionManager>(),
+          ),
+        // '/guild-war': (context) => GuildWarScreen(
+        //   guildWarManager: GetIt.I<GuildWarManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        //   ),
+        // '/tournament': (context) => TournamentScreen(
+        //   tournamentManager: GetIt.I<TournamentManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        //   ),
+        // '/seasonal-event': (context) => SeasonalEventScreen(
+        //   seasonalContentManager: GetIt.I<SeasonalContentManager>(),
+        //   accentColor: MGColors.primaryAction,
+        //   onClose: () => Navigator.pop(context),
+        //   ),
+},
+      ),
+    );
+  }
+
+  /// Year 1 dark theme with warm gold accents for RPG atmosphere.
+  ThemeData _buildTheme() {
+    return ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: MGColors.year1Accent,
+        brightness: Brightness.dark,
+      ),
+      useMaterial3: true,
+      scaffoldBackgroundColor: MGColors.backgroundDark,
+      appBarTheme: const AppBarTheme(
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: MGColors.backgroundDark,
+      ),
+      cardTheme: CardThemeData(
+        color: MGColors.cardDark,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ============================================================
+// Upgrade Screen -- full-screen upgrade browser with gold display
+// ============================================================
+
+class UpgradeScreen extends StatelessWidget {
+  const UpgradeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Hero Upgrades'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                const Icon(Icons.monetization_on, color: MGColors.gold, size: 20),
+                const SizedBox(width: 4),
+                Text(
+                  '${GetIt.I<GoldManager>().currentGold}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: const UpgradeListPanel(),
+    );
+  }
+}
+
+// ============================================================
+// Upgrade List Panel -- categorized upgrade browser with purchase
+// ============================================================
+
+class UpgradeListPanel extends StatelessWidget {
+  const UpgradeListPanel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final upgradeManager = context.watch<UpgradeManager>();
+    final categories = upgradeCategories.entries.toList();
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        final icon = upgradeCategoryIcons[category.key] ?? Icons.star;
+        return _buildCategorySection(
+          context, category.key, icon, category.value, upgradeManager,
+        );
+      },
+    );
+  }
+
+  Widget _buildCategorySection(
+    BuildContext context,
+    String title,
+    IconData icon,
+    List<String> upgradeIds,
+    UpgradeManager upgradeManager,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ── Category header ──
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            children: [
+              Icon(icon, size: 20, color: MGColors.year1Accent),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: MGColors.textHighEmphasis,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // ── Upgrade tiles ──
+        ...upgradeIds.map((id) {
+          final upgrade = upgradeManager.getUpgrade(id);
+          if (upgrade == null) return const SizedBox.shrink();
+          return _UpgradeItemTile(upgrade: upgrade);
+        }),
+        const Divider(height: 1, color: MGColors.border),
+      ],
+    );
+  }
+}
+
+// ============================================================
+// Upgrade Item Tile -- individual upgrade row with purchase button
+// ============================================================
+
+class _UpgradeItemTile extends StatelessWidget {
+  final Upgrade upgrade;
+
+  const _UpgradeItemTile({required this.upgrade});
+
+  @override
+  Widget build(BuildContext context) {
+    final goldManager = GetIt.I<GoldManager>();
+    final upgradeManager = context.read<UpgradeManager>();
+    final isMaxLevel = upgrade.currentLevel >= upgrade.maxLevel;
+    final canAfford = !isMaxLevel &&
+        upgradeManager.canAfford(upgrade.id, goldManager.currentGold);
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            // ── Level indicator ──
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: isMaxLevel
+                    ? MGColors.year1Primary.withAlpha(51)
+                    : MGColors.surfaceDark,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isMaxLevel ? MGColors.year1Primary : MGColors.border,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  '${upgrade.currentLevel}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: isMaxLevel
+                        ? MGColors.year1Primary
+                        : MGColors.textHighEmphasis,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            // ── Name, description, and level progress ──
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    upgrade.name,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: MGColors.textHighEmphasis,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    upgrade.description,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: MGColors.textMediumEmphasis,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Lv ${upgrade.currentLevel}/${upgrade.maxLevel}',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: MGColors.textDisabled,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            // ── Purchase button or MAX chip ──
+            if (isMaxLevel)
+              const Chip(
+                label: Text('MAX', style: TextStyle(fontSize: 12)),
+                backgroundColor: MGColors.surfaceDark,
+                side: BorderSide(color: MGColors.year1Primary),
+              )
+            else
+              ElevatedButton(
+                onPressed: canAfford
+                    ? () {
+                        upgradeManager.purchaseUpgrade(
+                          upgrade.id,
+                          () => goldManager.currentGold,
+                          (cost) => goldManager.trySpendGold(cost),
+                        );
+                        _applyUpgradeEffects();
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.monetization_on,
+                      size: 14,
+                      color: MGColors.gold,
+                    ),
+                    const SizedBox(width: 4),
+                    Text('${upgrade.costForNextLevel}'),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+void _setupBattlePass() {
+  final bp = GetIt.I<BattlePassManager>();
+
+  final season = BPSeasonBuilder.create28DaySeason(
+    id: 'season_1',
+    nameKr: '시즌 1',
+    startDate: DateTime.now().subtract(const Duration(days: 1)),
+    maxLevel: 50,
+    expPerLevel: 1000,
+  );
+
+  bp.setSeason(season);
+  bp.setMissions(
+    daily: BPSeasonBuilder.createDefaultDailyMissions(),
+    weekly: BPSeasonBuilder.createDefaultWeeklyMissions(),
+  );
+}
+
+
+void _setupGacha() {
+  final gacha = GetIt.I<GachaManager>();
+
+  gacha.registerPool(GachaPool(
+    id: 'standard_pool',
+    nameKr: '스탠다드 뽑기',
+    items: [
+      // N (50%)
+      ...List.generate(20, (i) => GachaItem(
+        id: 'n_item_$i',
+        nameKr: '일반 아이템 $i',
+        rarity: GachaRarity.normal,
+      )),
+
+      // R (35%)
+      ...List.generate(10, (i) => GachaItem(
+        id: 'r_item_$i',
+        nameKr: '레어 아이템 $i',
+        rarity: GachaRarity.rare,
+      )),
+
+      // SR (12%)
+      ...List.generate(5, (i) => GachaItem(
+        id: 'sr_item_$i',
+        nameKr: '슈퍼레어 아이템 $i',
+        rarity: GachaRarity.superRare,
+      )),
+
+      // SSR (2.7%)
+      GachaItem(
+        id: 'ssr_item_1',
+        nameKr: '울트라레어 아이템 1',
+        rarity: GachaRarity.ultraRare,
+      ),
+
+      // UR (0.3%)
+      GachaItem(
+        id: 'ur_item_1',
+        nameKr: '레전더리 아이템 1',
+        rarity: GachaRarity.legendary,
+      ),
+    ],
+  ));
+}
+
+void _registerCollections() {
+  final collection = GetIt.I<CollectionManager>();
+
+  // Characters 컬렉션
+  collection.registerCollection(Collection(
+    id: 'characters',
+    name: '캐릭터',
+    description: '모든 캐릭터를 수집하세요',
+    items: [
+      CollectionItem(
+        id: 'char_warrior',
+        name: '전사',
+        description: '강인한 근접 전투 캐릭터',
+        rarity: CollectionRarity.common,
+      ),
+      CollectionItem(
+        id: 'char_mage',
+        name: '마법사',
+        description: '강력한 마법 공격 캐릭터',
+        rarity: CollectionRarity.rare,
+      ),
+      CollectionItem(
+        id: 'char_archer',
+        name: '궁수',
+        description: '원거리 정밀 공격 캐릭터',
+        rarity: CollectionRarity.rare,
+      ),
+      CollectionItem(
+        id: 'char_assassin',
+        name: '암살자',
+        description: '치명적인 은신 공격 캐릭터',
+        rarity: CollectionRarity.epic,
+      ),
+      CollectionItem(
+        id: 'char_healer',
+        name: '힐러',
+        description: '팀을 치유하는 지원 캐릭터',
+        rarity: CollectionRarity.legendary,
+      ),
+    ],
+    completionReward: CollectionReward(type: RewardType.gold, amount: 10000),
+    milestoneRewards: {
+      25: CollectionReward(type: RewardType.gold, amount: 1000),
+      50: CollectionReward(type: RewardType.gold, amount: 3000),
+      75: CollectionReward(type: RewardType.gold, amount: 5000),
+    },
+  ));
+
+  // 아이템 해제 콜백 (햅틱 피드백)
+  collection.onItemUnlocked = (collectionId, itemId) {
+    // SettingsManager가 등록되어 있으면 햅틱 피드백
+    debugPrint('Collection item unlocked: $collectionId / $itemId');
+  };
+}
